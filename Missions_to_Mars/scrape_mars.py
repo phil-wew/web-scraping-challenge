@@ -108,4 +108,8 @@ def scrape_info():
 
     collection.insert_one(mars_dict)
 
+    browser.quit() 
+
+    return mars_dict
+
     print("Data Uploaded!")
