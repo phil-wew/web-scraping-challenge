@@ -9,18 +9,17 @@ conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 
 db = client.mars_db
-collection = db.scrape
+collection = db.mars_data
 
 
 def init_browser():
     executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
-    return Browser("chrome", **executable_path, headless=False)
+    return Browser("chrome", **executable_path, headless=True)
 
 
-def scrape_info():
+def scrape():
 
-    db = client.mars_db
-    collection = db.scrape
+    browser = init_browser()
 
     # URL of page to be scraped
     url = 'https://mars.nasa.gov/news/'
@@ -68,6 +67,8 @@ def scrape_info():
     url4 = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url4)
 
+    hemispheres = []
+
     # identify links for each hemisphere to click
     links = browser.links.find_by_partial_text("Hemisphere")
 
@@ -96,20 +97,20 @@ def scrape_info():
 
         title = soup.find('h2', class_='title').text
 
-    mars_dict = {
+        dictionary = {'title': title, 'img_url': img_url}
+
+        hemispheres.append(dictionary)
+
+    mars_data = {
         'article_title': article_title,
         'paragraph': paragraph,
         'image': featured_image,
-        'title': title,
-        'img_url': img_url,
+        'hemispheres': hemispheres,
         'table_html': table_html
     }
-    # {{mars.df_html|safe}} - for displaying html from mongo
 
-    collection.insert_one(mars_dict)
+    browser.quit()
 
-    browser.quit() 
-
-    return mars_dict
+    return mars_data
 
     print("Data Uploaded!")
