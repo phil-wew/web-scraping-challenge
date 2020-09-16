@@ -22,9 +22,9 @@
             <div class='row'>
                 <div class='col-md-12'></div>
 
-                <h2>Latest in Mars News:</h2>
-                <h3>{{ mars.article_title }}</h3>
-                <p>{{ mars.paragraph }}</p>
+                <h2>Latest in Mars News: </h2>
+                <br>
+                <p class="text-center"> <b>{{ mars.article_title }}:</b> {{ mars.paragraph }}</p>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-8 big_box">
-                <h2>This is the featured image.</h2>
+                <h2>Featured image: </h2>
                 <img src="{{mars.image}}" alt="Featured Mars Image" />
             </div>
         </div>
